@@ -3,6 +3,6 @@ p=0
 #bonsoir marie
 <<<<<<< Updated upstream
 # YOOOO
-=======
-#test 2
->>>>>>> Stashed changes
+
+def fucntion(X, Y):
+    return X + Y
