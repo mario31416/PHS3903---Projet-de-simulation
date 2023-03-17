@@ -1,6 +1,6 @@
 from hexalattice.hexalattice import *
 import numpy as np
-
+a=10
 N = 10
 hex_centers, _ = create_hex_grid(nx=N,
                                  ny=N,
