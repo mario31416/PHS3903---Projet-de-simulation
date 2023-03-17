@@ -19,25 +19,46 @@ color_vapor = np.full((N ** 2,3), [1, 0, 0]) # ROUGE pour la vapeur
 color_ice = np.full((N ** 2,3), [0, 0, 1]) # BLEU pour la glace 
 color_quasi = np.full((100,3), [0, 1, 0]) # VERT pour quasi-liquid 
 
-colors = color_ice + color_vapor + color_quasi 
+colors_init = color_ice + color_vapor + color_quasi 
 
-
+# --------------------------- MASK INITIAL --------------------
 mask_tot = np.full((100,4), [0, 0, 0, rho])    # Mask totale a=(0 ou 1 si dans cristal) b : boundary mass (quasi-liquid)
                                     # c : cristal mass (ice) d : diffusive mass (vapor)
 mask_tot[int((len(mask_tot) / 2) + N / 2)] = [1, 0, 1, 0]
 
+# ----------------------FONCTIONS ÉVOLUTION---------------------------
+
+
+
+# -----------------------UDPDATE MASK ------------------------------
+
+
+
+
+
+
+
+# ---------------------PLOT RESULTS------------------------------------
+
+# GLACE 
 ice = mask_tot[:,2]
 final_mask_ice = []
 for i in range(len(mask_tot)):
     for j in range(3):
         final_mask_ice.append(ice[i])
 
-
 final_mask_ice_reshaped = np.reshape(final_mask_ice, (N**2, 3))
 final_color_ice = (color_ice * final_mask_ice_reshaped) 
+# VAPEUR
+
+
+# QUASI-LIQUIDE
+
+
 
 colors = color_ice + color_vapor + color_quasi
 
+# PLOT
 
 plt.figure(1)
 plt.title('Mask total')
