@@ -293,19 +293,21 @@ def on_redraw(event):
     animation.background = None
 
 
-# bootstrap after the first draw
-def start_anim(event):
-    canvas.mpl_disconnect(start_anim.cid)
+# # bootstrap after the first draw
+# def start_anim(event):
+#     canvas.mpl_disconnect(start_anim.cid)
 
-    start_anim.timer.add_callback(animation.draw)
-    start_anim.timer.start()
-    canvas.mpl_connect('draw_event', on_redraw)
+#     start_anim.timer.add_callback(animation.draw)
+#     start_anim.timer.start()
+#     canvas.mpl_connect('draw_event', on_redraw)
 
 
-start_anim.cid = canvas.mpl_connect('draw_event', start_anim)
-start_anim.timer = animation.canvas.new_timer(interval=1)
+# start_anim.cid = canvas.mpl_connect('draw_event', start_anim)
+# start_anim.timer = animation.canvas.new_timer(interval=1)
 
-tstart = time.time()
+# tstart = time.time()
 
-plt.show()
-print('FPS: %f' % (animation.cnt/(time.time() - tstart)))
+# plt.show()
+# print('FPS: %f' % (animation.cnt/(time.time() - tstart)))
+
+print(20 % 5)

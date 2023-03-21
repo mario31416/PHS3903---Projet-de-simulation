@@ -30,11 +30,12 @@ for m in M:
     colors[m+1] = [1, 0, 1]
     colors[m-1] = [1, 0, 1]
 
-
-plot_single_lattice_custom_colors(x_hex_coords, y_hex_coords,
-                                      face_color=colors,
-                                      edge_color=colors*0,
-                                      min_diam=1,
-                                      plotting_gap=0.0,
-                                      rotate_deg=0)
+print('x_hex shape', x_hex_coords.shape)
+plot_single_lattice_custom_colors(x_hex_coords, 
+                                  y_hex_coords,
+                                    face_color=colors,
+                                    edge_color=colors*0,
+                                    min_diam=1,
+                                    plotting_gap=0.0,
+                                    rotate_deg=0)
 plt.show()
