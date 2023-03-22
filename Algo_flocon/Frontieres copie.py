@@ -1,6 +1,6 @@
 from hexalattice.hexalattice import *
 import numpy as np
-
+from fonctions_frontieres import *
 N = 5
 hex_centers, _ = create_hex_grid(nx=N,
                                  ny=N,
@@ -19,71 +19,56 @@ for i in range(N**2):
 
 center=round(N**2*0.5)
 
-vecteur_d[center] = 0.2
-
-
-
-def alentours(vecteur_p, center) :
-    # Fonction qui donne accès aux cellules àvoisinant une cellule centrale 
-    # selon la définition de la librairie
-    ## 
-    #      b   c
-    #    d   a   e  
-    #      f   g   
-    # 
-    # ##
-    N = int(np.sqrt(len(vecteur_p)))
-
-    a = vecteur_p[center]
-    b = vecteur_p[center+N-1]
-    c = vecteur_p[center+N]
-    d = vecteur_p[center-1]
-    e =vecteur_p[center+1]
-    f =vecteur_p[center-N-1] 
-    g =vecteur_p[center-N] 
-    return a,b,c,d,e,f,g
-
-
-
-
+#vecteur_d[center] = 0.2
 
 colors = [[1,1,1]]
 for i in range(N**2-1) :
     colors.append([1,1,1])
 
+vecteur_d[N] = 0.1
+vecteur_d[3*N-1] = 1
 
 
-#for t in range(2*N-1):
 for i in range(len(vecteur_d)):
-    print(i)
     
 
-    if i % N == 0: # Frontières gauche 
-        colors[i] = [1, 0, vecteur_d[i]]
-        print('allo')
+    if i > 0 and i < (N**2-1-(N-1)) and i% N == 0: # Frontières gauche en excluant les coins
+        print('gauche', i)
+        a,b,c,d,e,f,g = frontiere_g(vecteur_d, i)
+        vecteur_d[i]=(a+ b+ c+ d+e+f+g)/7
+        print(vecteur_d[i])
+        colors[i] = [0, 1, vecteur_d[i]]  
+
+        
         continue
 
-    if (i+1) % N == 0: # Frontières droite 
-        colors[i] = [1, 0, vecteur_d[i]]
-        print('allo')
-        continue
-
-
-    elif i <= N-1: # Frontière inférieure
+    if i > (N-1) and i < (N**2-1) and (i+1) % N == 0: # Frontières droite 
+        print('droite', i)
+        print(vecteur_d[i])
+        a,b,c,d,e,f,g = frontiere_d(vecteur_d, i)
+        print(a,b,c,d,e,f,g)
+        vecteur_d[i]=(a+ b+ c+ d+e+f+g)/7
+        print(vecteur_d[i])
         colors[i] = [1, 0, vecteur_d[i]]
         print('ici')
         continue
-    elif i >= N**2-1-(N-1): # Frontière supérieure
-        colors[i] = [1, 0, vecteur_d[i]]
-        print('là')
-        continue 
 
-    else:
-        print('calcul')
-        a,b,c,d,e,f,g = alentours(vecteur_d, i)
-        vecteur_d[i]=(a+ b+ c+ d+ e+ f+ g)/7
-        colors[i] = [0, 0, vecteur_d[i]]
-        print('couleur',colors[i])
+
+    # elif i <= N-1: # Frontière inférieure
+    #     colors[i] = [1, 0, vecteur_d[i]]
+    #     print('ici')
+    #     continue
+    # elif i >= N**2-1-(N-1): # Frontière supérieure
+    #     colors[i] = [1, 0, vecteur_d[i]]
+    #     print('là')
+    #     continue 
+
+    # else:
+    #     print('calcul')
+    #     a,b,c,d,e,f,g = alentours(vecteur_d, i)
+    #     vecteur_d[i]=(a+ b+ c+ d+ e+ f+ g)/7
+    #     colors[i] = [0, 0, vecteur_d[i]]
+    #     print('couleur',colors[i])
 
 
 colors = np.array(colors)

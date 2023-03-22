@@ -310,4 +310,4 @@ def on_redraw(event):
 # plt.show()
 # print('FPS: %f' % (animation.cnt/(time.time() - tstart)))
 
-print(20 % 5)
+print(0 % 5)
