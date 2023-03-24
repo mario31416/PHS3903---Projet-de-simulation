@@ -20,7 +20,7 @@ for i in range(N**2-1) :
 colors = np.array(a)
 print('a', a)
 
-M = [25, 63, 66]
+M = [35, 63, 66]
 for m in M:
     colors[m] = [0, 0, 0]
     colors[m+N] = [1, 0, 1]

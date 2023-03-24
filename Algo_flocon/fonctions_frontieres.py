@@ -1,6 +1,6 @@
 import numpy as np
 
-
+ 
 
 def alentours(vecteur_p, center) :
     # Fonction qui donne accès aux cellules àvoisinant une cellule centrale 
@@ -21,6 +21,19 @@ def alentours(vecteur_p, center) :
     f =vecteur_p[center-N-1] 
     g =vecteur_p[center-N] 
     return a,b,c,d,e,f,g
+
+
+def alentours_idx(N, center) :
+
+    a = center
+    b = center+N-1
+    c = center+N
+    d = center-1
+    e = center+1
+    f = center-N-1
+    g = center-N
+
+    return  a,b,c,d,e,f,g
 
 def frontiere_g(p, centre) :
 

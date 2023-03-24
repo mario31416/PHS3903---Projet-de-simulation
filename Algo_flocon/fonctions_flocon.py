@@ -1,6 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
-
+from fonctions_frontieres import *
 from hexalattice.hexalattice import *
 
 N = 10
@@ -20,6 +20,7 @@ def quasi_liquide(b0, kappa, d0, a) :
     ## b0, d0 = masques initiaux 
     for i in range(len(b0-1)) :
         if a[i] == 1 :
+            a,b,c,d,e,f,g = alentours(i)
             b0[i] = b0[i] + (1-kappa)*d0[i]
     return b0
 
