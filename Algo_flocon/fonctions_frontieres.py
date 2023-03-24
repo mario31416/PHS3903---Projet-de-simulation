@@ -12,26 +12,44 @@ def alentours(vecteur_p, center) :
     # 
     # ##
     N = int(np.sqrt(len(vecteur_p)))
+    if int(np.ceil((center+1)/10)) % 2 == 0 :
+        a = vecteur_p[center]
+        b = vecteur_p[center+N]
+        c = vecteur_p[center+N+1]
+        d = vecteur_p[center-1]
+        e =vecteur_p[center+1]
+        f =vecteur_p[center-N+1] 
+        g =vecteur_p[center-N] 
 
-    a = vecteur_p[center]
-    b = vecteur_p[center+N-1]
-    c = vecteur_p[center+N]
-    d = vecteur_p[center-1]
-    e =vecteur_p[center+1]
-    f =vecteur_p[center-N-1] 
-    g =vecteur_p[center-N] 
+    
+    else :
+        a = vecteur_p[center]
+        b = vecteur_p[center+N-1]
+        c = vecteur_p[center+N]
+        d = vecteur_p[center-1]
+        e =vecteur_p[center+1]
+        f =vecteur_p[center-N-1] 
+        g =vecteur_p[center-N] 
     return a,b,c,d,e,f,g
 
 
 def alentours_idx(N, center) :
-
-    a = center
-    b = center+N-1
-    c = center+N
-    d = center-1
-    e = center+1
-    f = center-N-1
-    g = center-N
+    if int(np.ceil((center+1)/10)) % 2 == 0 :
+        a = center
+        b = center+N
+        c =  center+N+1
+        d =  center-1
+        e = center+1
+        f = center-N+1
+        g = center-N
+    else : 
+        a = center
+        b = center+N-1
+        c = center+N
+        d = center-1
+        e = center+1
+        f = center-N-1
+        g = center-N
 
     return  a,b,c,d,e,f,g
 

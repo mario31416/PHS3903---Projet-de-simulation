@@ -1,10 +1,12 @@
-a = [[1,1], [1,1],[1,1]]
-b = a[0][1] + a[1][2]
-a[0][1] =b
-
-print(a)
+import numpy as np
+N = 11
 
 
+# a = 25
+
+# print(( int(np.ceil((a+1)/10))   ))
+
+print(int(((N**2) / 2)))
 
 # import time
 

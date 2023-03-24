@@ -8,7 +8,7 @@ rho = 0.3       # Densite
 
 
 # ----------RESEAU -------------------
-N = 10      # Taille de la grille 
+N=10# Taille de la grille 
 hex_centers, _ = create_hex_grid(nx=N,          # Création du résau 
                                  ny=N,
                                  do_plot=False)
@@ -27,8 +27,8 @@ mask_tot = np.full((N ** 2,4), [0, 0, 0, rho])    # Mask totale a=(0 ou 1 si dan
                                     # c : cristal mass (ice) d : diffusive mass (vapor)
 
 
-mask_tot[int((len(mask_tot) / 2) - N / 2)] = [1, 0, 1, 0]       # On fixe au milieu une cellule gelée
-centre = int((len(mask_tot) / 2) - N / 2)
+mask_tot[int((len(mask_tot) / 2)-N/2)] = [1, 0, 1, 0]       # On fixe au milieu une cellule gelée
+centre = int((len(mask_tot) / 2)-N/2 )
 # ----------------------FONCTIONS ÉVOLUTION---------------------------
 
 
