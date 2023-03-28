@@ -5,6 +5,7 @@ from fonctions_frontieres import *
 # ---------PARAMETRES--------------------
 
 rho = 0.3       # Densite
+kappa = 0.5     # Freezing parameter
 
 
 # ----------RESEAU -------------------
@@ -73,7 +74,6 @@ for i in range(len(mask_tot)):
 
 final_mask_ice_reshaped = np.reshape(final_mask_ice, (N**2, 3))
 final_color_ice = (color_ice * final_mask_ice_reshaped) 
-print(final_color_ice)
 # VAPEUR
 vapor = mask_tot[:,3]
 final_mask_vapor = []
