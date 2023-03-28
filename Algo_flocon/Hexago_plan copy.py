@@ -22,8 +22,6 @@ print('a', a)
 
 M = [35, 63, 66]
 for m in M:
-
-    
     colors[m] = [0, 0, 0]
     colors[m+N] = [1, 0, 1]
     colors[m+N-1] = [1, 0, 1]

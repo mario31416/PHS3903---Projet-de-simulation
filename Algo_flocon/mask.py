@@ -1,5 +1,6 @@
 from hexalattice.hexalattice import *
 import numpy as np
+from fonctions_frontieres import *
 
 # ---------PARAMETRES--------------------
 
@@ -7,7 +8,7 @@ rho = 0.3       # Densite
 
 
 # ----------RESEAU -------------------
-N = 10      # Taille de la grille 
+N=10# Taille de la grille 
 hex_centers, _ = create_hex_grid(nx=N,          # Création du résau 
                                  ny=N,
                                  do_plot=False)
@@ -24,9 +25,30 @@ colors_init = color_ice + color_vapor + color_quasi
 # --------------------------- MASK INITIAL --------------------
 mask_tot = np.full((N ** 2,4), [0, 0, 0, rho])    # Mask totale a=(0 ou 1 si dans cristal) b : boundary mass (quasi-liquid)
                                     # c : cristal mass (ice) d : diffusive mass (vapor)
-mask_tot[int((len(mask_tot) / 2) + N / 2)] = [1, 0, 1, 0]       # On fixe au milieu une cellule gelée
 
+
+mask_tot[int((len(mask_tot) / 2)-N/2)] = [1, 0, 1, 0]       # On fixe au milieu une cellule gelée
+centre = int((len(mask_tot) / 2)-N/2 )
 # ----------------------FONCTIONS ÉVOLUTION---------------------------
+
+
+def quasi_liquide(mask0, N, centre, kappa) :
+    ## b0, d0 = masques initiaux 
+    # centre = index
+    mask1 = mask0
+    a,b,c,d,e,f,g = alentours(mask0[:,1],centre) # Return valeurs de mask0[:, 1]
+    idxa,idxb,idxc,idxd,idxe,idxf,idxg = alentours_idx(N,centre)
+
+
+    mask1[idxb,1] = b + 2*((1-kappa)*mask0[idxb, 3])
+    mask1[idxc,1] = c + ((1-kappa)*mask0[idxc, 3])
+    mask1[idxd,1] = d + ((1-kappa)*mask0[idxd, 3])
+    mask1[idxe,1] = e + ((1-kappa)*mask0[idxe, 3])
+    mask1[idxf,1] = f + ((1-kappa)*mask0[idxf, 3])
+    mask1[idxg,1] = g + ((1-kappa)*mask0[idxg, 3])
+    
+
+    return mask1
 
 
 
@@ -39,6 +61,8 @@ mask_tot[int((len(mask_tot) / 2) + N / 2)] = [1, 0, 1, 0]       # On fixe au mil
 
 
 # ---------------------PLOT RESULTS------------------------------------
+
+mask_tot = quasi_liquide(mask_tot, N, centre, 0.05)
 
 # GLACE 
 ice = mask_tot[:,2]
@@ -121,5 +145,4 @@ plt.title('Mask quasi liquid')
 
 
 plt.show()
-
 
