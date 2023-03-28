@@ -63,7 +63,7 @@ def freezing(mask0, N, centre, kappa) :
 
 # ---------------------PLOT RESULTS------------------------------------
 
-mask_tot = quasi_liquide(mask_tot, N, centre, 0.05)
+mask_tot = freezing(mask_tot, N, centre, 0.05)
 
 # GLACE 
 ice = mask_tot[:,2]
