@@ -29,6 +29,7 @@ mask_tot = np.full((N ** 2,4), [0, 0, 0, rho])    # Mask totale a=(0 ou 1 si dan
 
 
 mask_tot[int((len(mask_tot) / 2)-N/2)] = [1, 0, 1, 0]       # On fixe au milieu une cellule gelée
+mask_tot[46] = [1, 0, 1, 0]
 centre = int((len(mask_tot) / 2)-N/2 )
 # ----------------------FONCTIONS ÉVOLUTION---------------------------
 
@@ -42,10 +43,10 @@ def freezing(mask0, N, centre, kappa) :
 
     idx = [idxb,idxc,idxd,idxe,idxf,idxg]
     for i in range(len(idx)) :
-        print(i)
         mask1[idx[i],1] = mask0[idx[i], 1] + ((1-kappa)*mask0[idx[i], 3])
 
-        mask1[idx[i],2]= mask0[idx[i], 1] + (kappa*mask0[idx[i], 3])
+        mask1[idx[i],2]= mask0[idx[i], 2] + (kappa*mask0[idx[i], 3]) 
+        print('mask0 vapeur :', mask0[idx[i], 3])
 
         mask1[idx[i],3] = 0
 
@@ -56,14 +57,22 @@ def freezing(mask0, N, centre, kappa) :
 # -----------------------UDPDATE MASK ------------------------------
 
 
+# Diffusion Emilien
 
+idx_ice = np.where(mask_tot[:,0] == 1.)[0] # Les index du masque glace qui ont la valeur 1 (aka qui sont de la glace)
+print(idx_ice)
 
+for i in idx_ice :
 
+    mask_tot = freezing(mask_tot, N, i, kappa)
+    
+
+    
 
 
 # ---------------------PLOT RESULTS------------------------------------
 
-mask_tot = freezing(mask_tot, N, centre, 0.05)
+
 
 # GLACE 
 ice = mask_tot[:,2]
@@ -103,46 +112,45 @@ final_colors = final_color_ice + final_color_vapor + final_color_quasi_liquid
 
 plt.figure(1)
 plot_single_lattice_custom_colors(x_hex_coords, y_hex_coords,       # Plot total des 3 phases 
-                                      face_color= final_colors,
-                                      edge_color=final_colors,
-                                      min_diam=1,
-                                      plotting_gap=0.0,
-                                      rotate_deg=0)
+                                    face_color= final_colors,
+                                    edge_color=final_colors,
+                                    min_diam=1,
+                                    plotting_gap=0.0,
+                                    rotate_deg=0)
 plt.title('Mask total')
 plt.figure(2)
 
 plot_single_lattice_custom_colors(x_hex_coords, y_hex_coords,       
-                                      face_color= final_color_ice,
-                                      edge_color=final_color_ice,
-                                      min_diam=1,
-                                      plotting_gap=0.0,
-                                      rotate_deg=0)
+                                    face_color= final_color_ice,
+                                    edge_color=final_color_ice,
+                                    min_diam=1,
+                                    plotting_gap=0.0,
+                                    rotate_deg=0)
 plt.title('Mask glace')
 
 plt.figure(3)
 
 plot_single_lattice_custom_colors(x_hex_coords, y_hex_coords,       
-                                      face_color=final_color_vapor,
-                                      edge_color=final_color_vapor,
-                                      min_diam=1,
-                                      plotting_gap=0.0,
-                                      rotate_deg=0)
+                                    face_color=final_color_vapor,
+                                    edge_color=final_color_vapor,
+                                    min_diam=1,
+                                    plotting_gap=0.0,
+                                    rotate_deg=0)
 
 plt.title('Mask vapeur')
 
 plt.figure(4)
 
 plot_single_lattice_custom_colors(x_hex_coords, y_hex_coords,       
-                                      face_color=final_color_quasi_liquid,
-                                      edge_color=final_color_quasi_liquid,
-                                      min_diam=1,
-                                      plotting_gap=0.0,
-                                      rotate_deg=0)
+                                    face_color=final_color_quasi_liquid,
+                                    edge_color=final_color_quasi_liquid,
+                                    min_diam=1,
+                                    plotting_gap=0.0,
+                                    rotate_deg=0)
 
 plt.title('Mask quasi liquid')
 
-
-
-
 plt.show()
+
+
 
