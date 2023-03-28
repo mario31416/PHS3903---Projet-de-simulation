@@ -39,16 +39,16 @@ def quasi_liquide(mask0, N, centre, kappa) :
     a,b,c,d,e,f,g = alentours(mask0[:,1],centre) # Return valeurs de mask0[:, 1]
     idxa,idxb,idxc,idxd,idxe,idxf,idxg = alentours_idx(N,centre)
 
-
-    mask1[idxb,1] = b + 2*((1-kappa)*mask0[idxb, 3])
-    mask1[idxc,1] = c + ((1-kappa)*mask0[idxc, 3])
-    mask1[idxd,1] = d + ((1-kappa)*mask0[idxd, 3])
-    mask1[idxe,1] = e + ((1-kappa)*mask0[idxe, 3])
-    mask1[idxf,1] = f + ((1-kappa)*mask0[idxf, 3])
-    mask1[idxg,1] = g + ((1-kappa)*mask0[idxg, 3])
-    
+    idx = [idxb,idxc,idxd,idxe,idxf,idxg]
+    pos = [b,c,d,e,f,g]
+    for i in range(len(idx)) :
+        print(i)
+        mask1[idx[i],1] = mask0[idx[i], 1] + ((1-kappa)*mask0[idx[i], 3])
+        mask1[idx[i],2] = mask0[idx[i], 2] + (kappa*mask0[idx[i], 3])
+        mask1[idx[i],3] = 0
 
     return mask1
+
 
 
 
