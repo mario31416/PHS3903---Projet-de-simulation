@@ -32,7 +32,7 @@ centre = int((len(mask_tot) / 2)-N/2 )
 # ----------------------FONCTIONS ÉVOLUTION---------------------------
 
 
-def quasi_liquide(mask0, N, centre, kappa) :
+def freezing(mask0, N, centre, kappa) :
     ## b0, d0 = masques initiaux 
     # centre = index
     mask1 = mask0
