@@ -44,7 +44,9 @@ def quasi_liquide(mask0, N, centre, kappa) :
     for i in range(len(idx)) :
         print(i)
         mask1[idx[i],1] = mask0[idx[i], 1] + ((1-kappa)*mask0[idx[i], 3])
-        mask1[idx[i],2] = mask0[idx[i], 2] + (kappa*mask0[idx[i], 3])
+
+        mask1[idx[i],2]= mask0[idx[i], 1] + (kappa*mask0[idx[i], 3])
+
         mask1[idx[i],3] = 0
 
     return mask1
