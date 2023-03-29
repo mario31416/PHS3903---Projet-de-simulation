@@ -30,6 +30,7 @@ mask_tot = np.full((N ** 2,4), [0, 0, 0, rho])    # Mask totale a=(0 ou 1 si dan
 
 
 mask_tot[int((len(mask_tot) / 2)-N/2)] = [1, 0, 1, 0]       # On fixe au milieu une cellule gelée
+#mask_tot[33] = [0, 0, 0, rho/2]  
 centre = int((len(mask_tot) / 2)-N/2 )
 # ----------------------FONCTIONS ÉVOLUTION---------------------------
 
@@ -67,7 +68,7 @@ for t in range(15):
             continue
 
         elif prox_crystal(mask_tot,i) != 0: # est a proximité du cristal, condition réfléchie
-            new_value = somme_vap_voisin_cristal(mask_tot, i) #Laplacien condition réfléchie
+            new_value = somme_vap_voisin_cristal(mask_tot, i, N) #Laplacien condition réfléchie
             mask_change[i,3] = new_value
 
         else:  
@@ -80,10 +81,8 @@ for t in range(15):
 
 
 
-
 # ---------------------PLOT RESULTS------------------------------------
 
-mask_tot = freezing(mask_tot, N, centre, 0.05)
 
 # GLACE 
 ice = mask_tot[:,2]
