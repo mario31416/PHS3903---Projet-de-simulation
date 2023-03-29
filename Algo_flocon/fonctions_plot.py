@@ -33,7 +33,7 @@ def plot_vapeur(mask_tot, color_vapor, x_hex_coords, y_hex_coords, N):
             final_mask_vapor.append(vapor[i])
 
     final_mask_vapor_reshaped = np.reshape(final_mask_vapor, (N**2, 3))
-    final_color_vapor = (color_vapor * final_mask_vapor_reshaped) 
+    final_color_vapor = (color_vapor * final_mask_vapor_reshaped)  / np.linalg.norm((color_vapor * final_mask_vapor_reshaped))
 
     # PLOT
 
@@ -58,7 +58,7 @@ def plot_quasi(mask_tot, color_quasi, x_hex_coords, y_hex_coords, N):
             final_mask_quasi_liquid.append(quasi_liquid[i])
 
     final_mask_quasi_liquid_reshaped = np.reshape(final_mask_quasi_liquid, (N**2, 3))
-    final_color_quasi_liquid = (color_quasi * final_mask_quasi_liquid_reshaped) 
+    final_color_quasi_liquid = (color_quasi * final_mask_quasi_liquid_reshaped) / np.linalg.norm((color_quasi * final_mask_quasi_liquid_reshaped))
 
     #PLOT
 
