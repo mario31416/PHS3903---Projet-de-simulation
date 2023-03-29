@@ -10,7 +10,7 @@ def plot_ice(mask_tot, color_ice, x_hex_coords, y_hex_coords, N):
             final_mask_ice.append(ice[i])
 
     final_mask_ice_reshaped = np.reshape(final_mask_ice, (N**2, 3))
-    final_color_ice = (color_ice * final_mask_ice_reshaped) 
+    final_color_ice = (color_ice * final_mask_ice_reshaped) / np.linalg.norm((color_ice * final_mask_ice_reshaped))
 
     # PLOT
 
