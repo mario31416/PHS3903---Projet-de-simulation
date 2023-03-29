@@ -5,6 +5,8 @@ from fonctions_frontieres import *
 # ---------PARAMETRES--------------------
 
 rho = 0.3       # Densite
+kappa = 0.5     # Freezing parameter
+iterations = 5 # Number of iterations 
 
 
 # ----------RESEAU -------------------
@@ -32,21 +34,20 @@ centre = int((len(mask_tot) / 2)-N/2 )
 # ----------------------FONCTIONS ÉVOLUTION---------------------------
 
 
-def quasi_liquide(mask0, N, centre, kappa) :
+def freezing(mask0, N, centre, kappa) :
     ## b0, d0 = masques initiaux 
     # centre = index
     mask1 = mask0
-    a,b,c,d,e,f,g = alentours(mask0[:,1],centre) # Return valeurs de mask0[:, 1]
     idxa,idxb,idxc,idxd,idxe,idxf,idxg = alentours_idx(N,centre)
 
 
-    mask1[idxb,1] = b + 2*((1-kappa)*mask0[idxb, 3])
-    mask1[idxc,1] = c + ((1-kappa)*mask0[idxc, 3])
-    mask1[idxd,1] = d + ((1-kappa)*mask0[idxd, 3])
-    mask1[idxe,1] = e + ((1-kappa)*mask0[idxe, 3])
-    mask1[idxf,1] = f + ((1-kappa)*mask0[idxf, 3])
-    mask1[idxg,1] = g + ((1-kappa)*mask0[idxg, 3])
-    
+    idx = [idxb,idxc,idxd,idxe,idxf,idxg]
+    for i in range(len(idx)) :
+        mask1[idx[i],1] = mask0[idx[i], 1] + ((1-kappa)*mask0[idx[i], 3])
+
+        mask1[idx[i],2]= mask0[idx[i], 1] + (kappa*mask0[idx[i], 3])
+
+        mask1[idx[i],3] = 0
 
     return mask1
 
@@ -62,7 +63,7 @@ def quasi_liquide(mask0, N, centre, kappa) :
 
 # ---------------------PLOT RESULTS------------------------------------
 
-mask_tot = quasi_liquide(mask_tot, N, centre, 0.05)
+mask_tot = freezing(mask_tot, N, centre, 0.05)
 
 # GLACE 
 ice = mask_tot[:,2]
@@ -73,7 +74,6 @@ for i in range(len(mask_tot)):
 
 final_mask_ice_reshaped = np.reshape(final_mask_ice, (N**2, 3))
 final_color_ice = (color_ice * final_mask_ice_reshaped) 
-print(final_color_ice)
 # VAPEUR
 vapor = mask_tot[:,3]
 final_mask_vapor = []
