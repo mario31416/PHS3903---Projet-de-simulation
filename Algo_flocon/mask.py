@@ -55,6 +55,26 @@ def freezing(mask0, N, centre, kappa) :
 
 # -----------------------UDPDATE MASK ------------------------------
 
+for t in range(15):
+    
+    mask_change = mask_tot
+    for i in range(len(mask_tot)):
+        case = mask_tot[i]
+        if i%N == 0 or (i+1)%N == 0 or i < N or i > N*(N-1):    
+            continue   
+
+        elif case[0]==1:
+            continue
+
+        elif prox_crystal(mask_tot,i) != 0: # est a proximité du cristal, condition réfléchie
+            new_value = somme_vap_voisin_cristal(mask_tot, i) #Laplacien condition réfléchie
+            mask_change[i,3] = new_value
+
+        else:  
+            ele = alentours(mask_tot,i) #
+            new_value = somme_vap(ele)
+            mask_change[i,3] = new_value  
+    mask_tot = mask_change
 
 
 
