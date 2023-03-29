@@ -138,3 +138,76 @@ def frontiere_d(p, centre) :
 
     return a,b,c,d,e,f,g
 
+def somme_vap(paquet):
+    som = 0 
+    for ele in paquet:
+        som = som + ele[3]
+    return som/7 
+
+def somme_vap_voisin_cristal(vecteur , center):
+    som = 0 
+    prox = []               #la fonction est qd meme dumb 
+    pas_prox =[]            #elle doit fonctionner avec voisin_crystal ahahah
+    idx_cristal = voisin_crystal(vecteur, center)[0]
+    idx_non_voisin = voisin_crystal(vecteur, center)[1]
+    for idx in idx_cristal:
+        prox.append(vecteur[idx])
+    
+    for i in range(len(prox)):
+        prox[i] = vecteur[center][3]
+
+    for idx in idx_non_voisin:
+        pas_prox.append(vecteur[idx])
+
+    som = (sum(prox)+sum(pas_prox))
+
+    return som/7 
+
+def prox_crystal(vecteur, center):
+    is_voisin = 0
+    voisin = alentours(vecteur,center)[1:]
+
+    for ele in voisin:
+        if ele[0] == 1:
+            is_voisin = 1
+
+    return is_voisin
+
+def voisin_crystal(vecteur, center):
+    N = np.sqrt(len(vecteur))
+    idx_voisin = []
+    idx_pas_voisin = []
+    idx_pts = alentours_idx(int(N, center))
+
+    for idx in idx_pts:
+        un_voisin = vecteur[idx]
+        if un_voisin[0] == 1:       # est dans le cristal
+            idx_voisin.append(idx)
+        else:
+            idx_pas_voisin.append(idx)
+    
+    return idx_voisin, idx_pas_voisin
+
+
+
+# Code pour updater Diffusion 
+for t in range(15):
+    
+    mask_change = mask_tot
+    for i in range(len(mask_tot)):
+        case = mask_tot[i]
+        if i%N == 0 or (i+1)%N == 0 or i < N or i > N*(N-1):    
+            continue   
+
+        elif case[0]==1:
+            continue
+
+        elif prox_crystal(mask_tot,i) != 0: # est a proximité du cristal, condition réfléchie
+            new_value = somme_vap_voisin_cristal(mask_tot, i) #Laplacien condition réfléchie
+            mask_change[i,3] = new_value
+
+        else:  
+            ele = alentours(mask_tot,i) #
+            new_value = somme_vap(ele)
+            mask_change[i,3] = new_value  
+    mask_tot = mask_change
