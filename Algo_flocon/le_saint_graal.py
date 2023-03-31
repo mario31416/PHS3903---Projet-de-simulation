@@ -20,19 +20,17 @@ def progressbar(it, prefix="", size=60, out=sys.stdout): # Python3.3+
 
 # ---------PARAMETRES--------------------
 
-rho = 0.4      # Densite
-kappa = 0.6     # Freezing parameter
-iterations = 150 # Number of iterations  A UTILISER !
-alpha = 0.21
-beta = 0.5 
-theta = 0.02
-mu = 0.015
-gamma = 0.0001
+rho = 0.3       # Densite
+kappa = 0.5     # Freezing parameter
+iterations = 100 # Number of iterations  A UTILISER !
+alpha = 0.006
+beta = 2.9 
+theta = 0.004
 
 
 
 # ----------RESEAU -------------------
-N = 100 # Taille de la grille 
+N = 35 # Taille de la grille 
 hex_centers, _ = create_hex_grid(nx=N,          # Création du résau 
                                  ny=N,
                                  do_plot=False)
@@ -73,23 +71,6 @@ def freezing(mask0, N, centre, kappa) :
         mask1[idx[i],2]= mask0[idx[i], 1] + (kappa*mask0[idx[i], 3])
 
         mask1[idx[i],3] = 0
-
-    return mask1
-
-def melting(mask0, N, centre, mu, gamma) :
-    ## b0, d0 = masques initiaux 
-    # centre = index
-    mask1 = mask0
-    idxa,idxb,idxc,idxd,idxe,idxf,idxg = alentours_idx(N,centre)
-
-
-    idx = [idxb,idxc,idxd,idxe,idxf,idxg]
-    for i in range(len(idx)) :
-        mask1[idx[i],1] = (1-mu)*mask0[idx[i],1]
-
-        mask1[idx[i],2]= (1-gamma)*mask0[idx[i],2]
-
-        mask1[idx[i],3] = mask0[idx[i],3] + mu*mask0[idx[i],1] + gamma*mask0[idx[i],2]
 
     return mask1
 
@@ -153,25 +134,20 @@ def attachement(mask0, N, centre, alpha, beta, theta):
 
    
 for t in range(iterations):
-#           FREEZING
+
     a = np.where(mask_tot[:,0]==1)
     for ele in a[0] :
         mask_change = freezing(mask_tot, N, ele, kappa)
     mask_tot = mask_change
-
-#           MELTING
-    a = np.where(mask_tot[:,0]==1)
-    for ele in a[0] :
-        mask_change = melting(mask_tot, N, ele, mu, gamma)
-    mask_tot = mask_change
-
+    b_rtyui = np.where(mask_tot[:,1]==np.max(mask_tot[:,1]))[0]
+    print('les indices du QLL max:',b_rtyui)
 
     #plot_total(mask_tot, color_ice, color_vapor, color_quasi, x_hex_coords, y_hex_coords, N)
 
     for i in range(len(mask_tot)):
 
         #                   ATTACHEMENT
-        mask_change = attachement(mask_tot, N, i, alpha, beta, theta)
+        mask_change = attachement(mask_tot, N, i, 0.21, 0.5, 0.02)
     #plot_total(mask_change, color_ice, color_vapor, color_quasi, x_hex_coords, y_hex_coords, N)
 
         #                  DIFFUSION
@@ -194,7 +170,6 @@ for t in range(iterations):
             new_value = somme_vap(ele)
             mask_change[i,3] = new_value  
     mask_tot = mask_change
-    print(t)
     #plot_total(mask_tot, color_ice, color_vapor, color_quasi, x_hex_coords, y_hex_coords, N)
 
 
@@ -255,34 +230,34 @@ max = np.max(final_color_quasi_liquid)
 final_color_quasi_liquid = final_color_quasi_liquid/max
 
 
-# plt.figure(1)
-# plot_single_lattice_custom_colors(x_hex_coords, y_hex_coords,       # Plot total des 3 phases 
-#                                       face_color= final_colors,
-#                                       edge_color=final_colors,
-#                                       min_diam=1,
-#                                       plotting_gap=0.0,
-#                                       rotate_deg=0)
-# plt.title('Mask total')
-# plt.figure(2)
+plt.figure(1)
+plot_single_lattice_custom_colors(x_hex_coords, y_hex_coords,       # Plot total des 3 phases 
+                                      face_color= final_colors,
+                                      edge_color=final_colors,
+                                      min_diam=1,
+                                      plotting_gap=0.0,
+                                      rotate_deg=0)
+plt.title('Mask total')
+plt.figure(2)
 
-# plot_single_lattice_custom_colors(x_hex_coords, y_hex_coords,       
-#                                       face_color= final_color_ice,
-#                                       edge_color=final_color_ice,
-#                                       min_diam=1,
-#                                       plotting_gap=0.0,
-#                                       rotate_deg=0)
-# plt.title('Mask glace')
+plot_single_lattice_custom_colors(x_hex_coords, y_hex_coords,       
+                                      face_color= final_color_ice,
+                                      edge_color=final_color_ice,
+                                      min_diam=1,
+                                      plotting_gap=0.0,
+                                      rotate_deg=0)
+plt.title('Mask glace')
 
-# plt.figure(3)
+plt.figure(3)
 
-# plot_single_lattice_custom_colors(x_hex_coords, y_hex_coords,       
-#                                       face_color=final_color_vapor,
-#                                       edge_color=final_color_vapor,
-#                                       min_diam=1,
-#                                       plotting_gap=0.0,
-#                                       rotate_deg=0)
+plot_single_lattice_custom_colors(x_hex_coords, y_hex_coords,       
+                                      face_color=final_color_vapor,
+                                      edge_color=final_color_vapor,
+                                      min_diam=1,
+                                      plotting_gap=0.0,
+                                      rotate_deg=0)
 
-# plt.title('Mask vapeur')
+plt.title('Mask vapeur')
 
 plt.figure(4)
 
