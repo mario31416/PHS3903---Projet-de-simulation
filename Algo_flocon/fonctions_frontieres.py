@@ -12,7 +12,7 @@ def alentours(vecteur_p, center) :
     # 
     # ##
     N = int(np.sqrt(len(vecteur_p)))
-    if int(np.ceil((center+1)/10)) % 2 == 0 : #center impaire
+    if int(np.ceil((center+1)/N)) % 2 == 0 : #center impaire
         a = vecteur_p[center]
         b = vecteur_p[center+N]
         c = vecteur_p[center+N+1]
@@ -34,7 +34,7 @@ def alentours(vecteur_p, center) :
 
 
 def alentours_idx(N, center) :
-    if int(np.ceil((center+1)/10)) % 2 == 0 :
+    if int(np.ceil((center+1)/N)) % 2 == 0 :
         a = center
         b = center+N
         c =  center+N+1

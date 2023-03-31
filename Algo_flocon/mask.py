@@ -11,7 +11,7 @@ iterations = 5 # Number of iterations
 
 
 # ----------RESEAU -------------------
-N=10# Taille de la grille 
+N=7# Taille de la grille 
 hex_centers, _ = create_hex_grid(nx=N,          # Création du résau 
                                  ny=N,
                                  do_plot=False)

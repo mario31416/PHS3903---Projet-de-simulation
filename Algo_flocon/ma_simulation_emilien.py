@@ -20,10 +20,13 @@ def progressbar(it, prefix="", size=60, out=sys.stdout): # Python3.3+
 
 # ---------PARAMETRES--------------------
 
-rho = 0.3       # Densite
-kappa = 0.5     # Freezing parameter
+rho = 0.8       # Densite
+kappa = 0.05     # Freezing parameter
 iterations = 100 # Number of iterations  A UTILISER !
 alpha = 0.006
+beta = 2.9 
+theta = 0.004
+
 
 
 # ----------RESEAU -------------------
