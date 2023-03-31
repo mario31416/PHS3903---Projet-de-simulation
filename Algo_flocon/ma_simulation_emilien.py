@@ -22,7 +22,7 @@ def progressbar(it, prefix="", size=60, out=sys.stdout): # Python3.3+
 
 rho = 0.3       # Densite
 kappa = 0.5     # Freezing parameter
-iterations = 10 # Number of iterations  A UTILISER !
+iterations = 100 # Number of iterations  A UTILISER !
 
 
 # ----------RESEAU -------------------
@@ -145,8 +145,9 @@ for t in range(iterations):
     plot_total(mask_change, color_ice, color_vapor, color_quasi, x_hex_coords, y_hex_coords, N)
 
         #                  DIFFUSION
+    mask_tot = mask_change
     for i in range(len(mask_tot)):
-        mask_tot = mask_change
+        
         case = mask_tot[i]
         if i%N == 0 or (i+1)%N == 0 or i < N or i > N*(N-1):    
             continue   
@@ -263,6 +264,6 @@ plot_single_lattice_custom_colors(x_hex_coords, y_hex_coords,
 
 plt.title('Mask quasi liquid')
 
-
+plt.show()
 
 
