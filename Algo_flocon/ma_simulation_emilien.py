@@ -1,6 +1,7 @@
 from hexalattice.hexalattice import *
 import numpy as np
 from fonctions_frontieres import *
+from fonctions_plot import * 
 import time 
 
 # PROGRESS BAR
@@ -21,11 +22,11 @@ def progressbar(it, prefix="", size=60, out=sys.stdout): # Python3.3+
 
 rho = 0.3       # Densite
 kappa = 0.5     # Freezing parameter
-iterations = 100 # Number of iterations  A UTILISER !
+iterations = 10 # Number of iterations  A UTILISER !
 
 
 # ----------RESEAU -------------------
-N= 50 # Taille de la grille 
+N= 10 # Taille de la grille 
 hex_centers, _ = create_hex_grid(nx=N,          # Création du résau 
                                  ny=N,
                                  do_plot=False)
@@ -128,21 +129,24 @@ def attachement(mask0, N, centre, alpha, beta, theta):
 print(cell_centre_domaine, len(mask_tot)/2)
 
    
-for t in progressbar(range(100), "Computing: ", iterations):
-    time.sleep(0.1)
-
-
+for t in range(iterations):
 
     a = np.where(mask_tot[:,0]==1)
     for ele in a[0] :
         mask_change = freezing(mask_tot, N, ele, kappa)
     mask_tot = mask_change
+
+    plot_total(mask_tot, color_ice, color_vapor, color_quasi, x_hex_coords, y_hex_coords, N)
+
     for i in range(len(mask_tot)):
 
         #                   ATTACHEMENT
-        mask_change = attachement(mask_tot, N, i, 0.21, 1, 0.02)
+        mask_change = attachement(mask_tot, N, i, 0.21, 0.5, 0.02)
+    plot_total(mask_change, color_ice, color_vapor, color_quasi, x_hex_coords, y_hex_coords, N)
 
         #                  DIFFUSION
+    for i in range(len(mask_tot)):
+        mask_tot = mask_change
         case = mask_tot[i]
         if i%N == 0 or (i+1)%N == 0 or i < N or i > N*(N-1):    
             continue   
@@ -159,6 +163,7 @@ for t in progressbar(range(100), "Computing: ", iterations):
             new_value = somme_vap(ele)
             mask_change[i,3] = new_value  
     mask_tot = mask_change
+    plot_total(mask_tot, color_ice, color_vapor, color_quasi, x_hex_coords, y_hex_coords, N)
 
 
 
@@ -260,6 +265,4 @@ plt.title('Mask quasi liquid')
 
 
 
-
-plt.show()
 
