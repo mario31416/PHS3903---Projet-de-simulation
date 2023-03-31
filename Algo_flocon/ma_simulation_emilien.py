@@ -23,10 +23,11 @@ def progressbar(it, prefix="", size=60, out=sys.stdout): # Python3.3+
 rho = 0.3       # Densite
 kappa = 0.5     # Freezing parameter
 iterations = 100 # Number of iterations  A UTILISER !
+alpha = 0.006
 
 
 # ----------RESEAU -------------------
-N= 10 # Taille de la grille 
+N = 35 # Taille de la grille 
 hex_centers, _ = create_hex_grid(nx=N,          # Création du résau 
                                  ny=N,
                                  do_plot=False)
@@ -126,7 +127,7 @@ def attachement(mask0, N, centre, alpha, beta, theta):
     
 # -----------------------UDPDATE MASK ------------------------------
 
-print(cell_centre_domaine, len(mask_tot)/2)
+
 
    
 for t in range(iterations):
@@ -135,36 +136,38 @@ for t in range(iterations):
     for ele in a[0] :
         mask_change = freezing(mask_tot, N, ele, kappa)
     mask_tot = mask_change
+    b_rtyui = np.where(mask_tot[:,1]==np.max(mask_tot[:,1]))[0]
+    print('les indices du QLL max:',b_rtyui)
 
-    plot_total(mask_tot, color_ice, color_vapor, color_quasi, x_hex_coords, y_hex_coords, N)
+    #plot_total(mask_tot, color_ice, color_vapor, color_quasi, x_hex_coords, y_hex_coords, N)
 
     for i in range(len(mask_tot)):
 
         #                   ATTACHEMENT
         mask_change = attachement(mask_tot, N, i, 0.21, 0.5, 0.02)
-    plot_total(mask_change, color_ice, color_vapor, color_quasi, x_hex_coords, y_hex_coords, N)
+    #plot_total(mask_change, color_ice, color_vapor, color_quasi, x_hex_coords, y_hex_coords, N)
 
         #                  DIFFUSION
-    mask_tot = mask_change
+    mask_1 = np.copy(mask_change)
     for i in range(len(mask_tot)):
         
-        case = mask_tot[i]
+        case = mask_1[i]
         if i%N == 0 or (i+1)%N == 0 or i < N or i > N*(N-1):    
             continue   
 
         elif case[0]==1:
             continue
 
-        elif prox_crystal(mask_tot,i) != 0: # est a proximité du cristal, condition réfléchie
-            new_value = somme_vap_voisin_cristal(mask_tot, i, N) #Laplacien condition réfléchie
+        elif prox_crystal(mask_1,i) != 0: # est a proximité du cristal, condition réfléchie
+            new_value = somme_vap_voisin_cristal(mask_1, i, N) #Laplacien condition réfléchie
             mask_change[i,3] = new_value
 
         else:  
-            ele = alentours(mask_tot,i) #
+            ele = alentours(mask_1,i) #
             new_value = somme_vap(ele)
             mask_change[i,3] = new_value  
     mask_tot = mask_change
-    plot_total(mask_tot, color_ice, color_vapor, color_quasi, x_hex_coords, y_hex_coords, N)
+    #plot_total(mask_tot, color_ice, color_vapor, color_quasi, x_hex_coords, y_hex_coords, N)
 
 
 
@@ -263,7 +266,7 @@ plot_single_lattice_custom_colors(x_hex_coords, y_hex_coords,
                                       rotate_deg=0)
 
 plt.title('Mask quasi liquid')
-
+ 
 plt.show()
 
 
