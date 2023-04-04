@@ -20,19 +20,19 @@ def progressbar(it, prefix="", size=60, out=sys.stdout): # Python3.3+
 
 # ---------PARAMETRES--------------------
 
-rho = 0.4      # Densite
-kappa = 0.6     # Freezing parameter
-iterations = 150 # Number of iterations  A UTILISER !
-alpha = 0.21
-beta = 0.5 
-theta = 0.02
+rho = 0.635     # Densite
+kappa = 0.0075   # Freezing parameter
+iterations = 1000 # Number of iterations  A UTILISER !
+alpha = 0.4
+beta = 1.6 
+theta = 0.025
 mu = 0.015
-gamma = 0.0001
+gamma = 0.0005
 
 
 
 # ----------RESEAU -------------------
-N = 100 # Taille de la grille 
+N = 250 # Taille de la grille 
 hex_centers, _ = create_hex_grid(nx=N,          # Création du résau 
                                  ny=N,
                                  do_plot=False)
@@ -284,7 +284,6 @@ final_color_quasi_liquid = final_color_quasi_liquid/max
 
 # plt.title('Mask vapeur')
 
-plt.figure(4)
 
 plot_single_lattice_custom_colors(x_hex_coords, y_hex_coords,       
                                       face_color=final_color_quasi_liquid,
@@ -292,6 +291,8 @@ plot_single_lattice_custom_colors(x_hex_coords, y_hex_coords,
                                       min_diam=1,
                                       plotting_gap=0.0,
                                       rotate_deg=0)
+
+plot_total(mask_tot, color_ice, color_vapor, color_quasi, x_hex_coords, y_hex_coords, N)
 
 plt.title('Mask quasi liquid')
  
