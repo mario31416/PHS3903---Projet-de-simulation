@@ -3,6 +3,7 @@ import numpy as np
 from fonctions_frontieres import *
 from fonctions_plot import * 
 import time 
+from PIL import Image
 
 # PROGRESS BAR
 import sys
@@ -20,19 +21,20 @@ def progressbar(it, prefix="", size=60, out=sys.stdout): # Python3.3+
 
 # ---------PARAMETRES--------------------
 
-rho = 0.635     # Densite
-kappa = 0.0075   # Freezing parameter
-iterations = 1000 # Number of iterations  A UTILISER !
-alpha = 0.4
-beta = 1.6 
-theta = 0.025
-mu = 0.015
-gamma = 0.0005
+rho = 0.6     # Densite
+kappa = 0.0001  # Freezing parameter
+iterations = 100 # Number of iterations  A UTILISER !
+alpha = 0.3
+beta = 1.3 
+theta = 0.1
+mu = 0.1
+gamma = 0.0001
+nframe = 10 # nombre d'images composant le gif
 
 
 
 # ----------RESEAU -------------------
-N = 250 # Taille de la grille 
+N = 50 # Taille de la grille 
 hex_centers, _ = create_hex_grid(nx=N,          # Création du résau 
                                  ny=N,
                                  do_plot=False)
@@ -40,7 +42,7 @@ hex_centers, _ = create_hex_grid(nx=N,          # Création du résau
 x_hex_coords = hex_centers[:, 0]
 y_hex_coords = hex_centers[:, 1]
 
-color_vapor = np.full((N ** 2,3), [1, 0, 0]) # ROUGE pour la vapeur 
+color_vapor = np.full((N ** 2,3), [1, 1, 1]) # ROUGE pour la vapeur 
 color_ice = np.full((N ** 2,3), [0, 0, 1]) # BLEU pour la glace 
 color_quasi = np.full((N ** 2,3), [0, 1, 0]) # VERT pour quasi-liquid 
 
@@ -150,8 +152,8 @@ def attachement(mask0, N, centre, alpha, beta, theta):
 # -----------------------UDPDATE MASK ------------------------------
 
 
-
-   
+time_scale = np.linspace(0, iterations-1, iterations)
+frame_id = time_scale[::int(iterations / nframe)]
 for t in range(iterations):
 #           FREEZING
     a = np.where(mask_tot[:,0]==1)
@@ -160,10 +162,10 @@ for t in range(iterations):
     mask_tot = mask_change
 
 #           MELTING
-    a = np.where(mask_tot[:,0]==1)
-    for ele in a[0] :
-        mask_change = melting(mask_tot, N, ele, mu, gamma)
-    mask_tot = mask_change
+    # a = np.where(mask_tot[:,0]==1)
+    # for ele in a[0] :
+    #     mask_change = melting(mask_tot, N, ele, mu, gamma)
+    # mask_tot = mask_change
 
 
     #plot_total(mask_tot, color_ice, color_vapor, color_quasi, x_hex_coords, y_hex_coords, N)
@@ -195,6 +197,16 @@ for t in range(iterations):
             mask_change[i,3] = new_value  
     mask_tot = mask_change
     print(t)
+    if t in frame_id :
+        plot_total(mask_tot, color_ice, color_vapor, color_quasi, x_hex_coords, y_hex_coords, N)
+        plt.title(f"iteration {t}")
+        plt.savefig(f'test total{t}.png')
+        # change path selon utilisateur
+        image = Image.open(f'/Users/marielafontaine/Documents/GitHub/PHS3903-Projet-de-simulation/test total{t}.png')
+        greyscale = image.convert('L')
+        greyscale.save(f'test total{t}.png')
+        plt.clf()
+# plt.close()
     #plot_total(mask_tot, color_ice, color_vapor, color_quasi, x_hex_coords, y_hex_coords, N)
 
 
@@ -285,17 +297,25 @@ final_color_quasi_liquid = final_color_quasi_liquid/max
 # plt.title('Mask vapeur')
 
 
-plot_single_lattice_custom_colors(x_hex_coords, y_hex_coords,       
-                                      face_color=final_color_quasi_liquid,
-                                      edge_color=final_color_quasi_liquid,
-                                      min_diam=1,
-                                      plotting_gap=0.0,
-                                      rotate_deg=0)
+# plot_single_lattice_custom_colors(x_hex_coords, y_hex_coords,       
+#                                       face_color=final_color_quasi_liquid,
+#                                       edge_color=final_color_quasi_liquid,
+#                                       min_diam=1,
+#                                       plotting_gap=0.0,
+#                                       rotate_deg=0)
 
-plot_total(mask_tot, color_ice, color_vapor, color_quasi, x_hex_coords, y_hex_coords, N)
 
-plt.title('Mask quasi liquid')
+
+
+t = np.linspace(0, iterations-1, iterations)
+print(t)
+
+frame_id = [int(i) for i in frame_id]
+print(frame_id)
+animate_from_jpgs('test total', frame_id, animation_name='diffusion1d.gif', delete=True, duration=list((t*5 + 0.5)/5))
+
+
  
-plt.show()
+
 
 
