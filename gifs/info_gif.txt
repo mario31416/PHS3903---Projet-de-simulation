@@ -25,3 +25,16 @@ mu = 0.07
 gamma = 0.001
 nframe = 50 # nombre d'images composant le gif
 N = 200
+
+
+triangle 1
+rho = 0.58    # Densite
+kappa = 0.1   # Freezing parameter
+iterations = 2000 # Number of iterations  A UTILISER !
+alpha = 0.08
+beta = 2
+theta = 0.011
+mu = 0.01
+gamma = 0.0005
+nframe = 50 # nombre d'images composant le gif
+N = 160 # Taille de la grille 
