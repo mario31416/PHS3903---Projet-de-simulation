@@ -21,20 +21,24 @@ def progressbar(it, prefix="", size=60, out=sys.stdout): # Python3.3+
 
 # ---------PARAMETRES--------------------
 
-rho = 0.6     # Densite
-kappa = 0.0001  # Freezing parameter
-iterations = 100 # Number of iterations  A UTILISER !
-alpha = 0.3
-beta = 1.3 
-theta = 0.1
-mu = 0.1
-gamma = 0.0001
-nframe = 10 # nombre d'images composant le gif
+rho = 0.635     # Densite
+kappa = 0.0075  # Freezing parameter
+iterations = 2100 # Number of iterations  A UTILISER !
+alpha = 0.4
+beta = 2.2
+theta = 0.025
+mu = 0.015
+gamma = 0.0005
+
+nframe = 30 # nombre d'images composant le gif
+
+
+
 
 
 
 # ----------RESEAU -------------------
-N = 50 # Taille de la grille 
+N = 325 # Taille de la grille 
 hex_centers, _ = create_hex_grid(nx=N,          # Création du résau 
                                  ny=N,
                                  do_plot=False)
@@ -58,6 +62,17 @@ if N%2 == 0 : # donc pair !
 else:
     mask_tot[int(len(mask_tot) / 2)] = [1, 0, 1, 0]       # On fixe au milieu une cellule gelée 
     cell_centre_domaine = int((len(mask_tot) / 2))
+
+
+# mask_tot[int((len(mask_tot) / 2)-N/2)+3*N-1] = [1, 0, 1, 0]
+# mask_tot[int((len(mask_tot) / 2)-N/2)+N] = [1, 0, 1, 0]
+# mask_tot[int((len(mask_tot) / 2)-N/2)+2*N-1] = [1, 0, 1, 0]
+# mask_tot[int((len(mask_tot) / 2)-N/2)-3*N-1] = [1, 0, 1, 0]
+# mask_tot[int((len(mask_tot) / 2)-N/2)-N] = [1, 0, 1, 0]
+# mask_tot[int((len(mask_tot) / 2)-N/2)-2*N-1] = [1, 0, 1, 0]
+# mask_tot[int((len(mask_tot) / 2)-N/2)+3] = [1, 0, 1, 0]
+# mask_tot[int((len(mask_tot) / 2)-N/2)+1] = [1, 0, 1, 0]
+# mask_tot[int((len(mask_tot) / 2)-N/2)+2] = [1, 0, 1, 0]
 # ----------------------FONCTIONS ÉVOLUTION---------------------------
 
 
@@ -154,6 +169,7 @@ def attachement(mask0, N, centre, alpha, beta, theta):
 
 time_scale = np.linspace(0, iterations-1, iterations)
 frame_id = time_scale[::int(iterations / nframe)]
+frame_id = np.insert(frame_id, len(frame_id), iterations-1)
 for t in range(iterations):
 #           FREEZING
     a = np.where(mask_tot[:,0]==1)
@@ -308,11 +324,11 @@ final_color_quasi_liquid = final_color_quasi_liquid/max
 
 
 t = np.linspace(0, iterations-1, iterations)
-print(t)
+
 
 frame_id = [int(i) for i in frame_id]
-print(frame_id)
-animate_from_jpgs('test total', frame_id, animation_name='diffusion1d.gif', delete=True, duration=list((t*5 + 0.5)/5))
+duration = np.full(nframe, 3/nframe).tolist()
+animate_from_jpgs('test total', frame_id, animation_name='diffusion1d.gif', delete=True, duration=duration)
 
 
  
