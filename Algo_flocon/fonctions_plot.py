@@ -14,13 +14,13 @@ def plot_ice(mask_tot, color_ice, x_hex_coords, y_hex_coords, N):
 
     # PLOT
 
-    plot_single_lattice_custom_colors(x_hex_coords, y_hex_coords,       
-                                        face_color= final_color_ice,
-                                        edge_color=final_color_ice,
-                                        min_diam=1,
-                                        plotting_gap=0.0,
-                                        rotate_deg=0)
-    plt.title('Mask glace')
+    # plot_single_lattice_custom_colors(x_hex_coords, y_hex_coords,       
+    #                                     face_color= final_color_ice,
+    #                                     edge_color=final_color_ice,
+    #                                     min_diam=1,
+    #                                     plotting_gap=0.0,
+    #                                     rotate_deg=0)
+    # plt.title('Mask glace')
     return final_color_ice
 
 
@@ -33,18 +33,19 @@ def plot_vapeur(mask_tot, color_vapor, x_hex_coords, y_hex_coords, N):
             final_mask_vapor.append(vapor[i])
 
     final_mask_vapor_reshaped = np.reshape(final_mask_vapor, (N**2, 3))
+    
     final_color_vapor = (color_vapor * final_mask_vapor_reshaped)  / np.max((color_vapor * final_mask_vapor_reshaped))
-
+    print('final color vaport', final_color_vapor)
     # PLOT
 
-    plot_single_lattice_custom_colors(x_hex_coords, y_hex_coords,       
-                                      face_color=final_color_vapor,
-                                      edge_color=final_color_vapor,
-                                      min_diam=1,
-                                      plotting_gap=0.0,
-                                      rotate_deg=0)
+    # plot_single_lattice_custom_colors(x_hex_coords, y_hex_coords,       
+    #                                   face_color=final_color_vapor,
+    #                                   edge_color=final_color_vapor,
+    #                                   min_diam=1,
+    #                                   plotting_gap=0.0,
+    #                                   rotate_deg=0)
 
-    plt.title('Mask vapeur')
+    # plt.title('Mask vapeur')
     return final_color_vapor
 
 def plot_quasi(mask_tot, color_quasi, x_hex_coords, y_hex_coords, N):
@@ -62,21 +63,27 @@ def plot_quasi(mask_tot, color_quasi, x_hex_coords, y_hex_coords, N):
 
     #PLOT
 
-    plot_single_lattice_custom_colors(x_hex_coords, y_hex_coords,       
-                                        face_color=final_color_quasi_liquid,
-                                        edge_color=final_color_quasi_liquid,
-                                        min_diam=1,
-                                        plotting_gap=0.0,
-                                        rotate_deg=0)
+    # plot_single_lattice_custom_colors(x_hex_coords, y_hex_coords,       
+    #                                     face_color=final_color_quasi_liquid,
+    #                                     edge_color=final_color_quasi_liquid,
+    #                                     min_diam=1,
+    #                                     plotting_gap=0.0,
+    #                                     rotate_deg=0)
 
-    plt.title('Mask quasi liquid')
+    # plt.title('Mask quasi liquid')
     return final_color_quasi_liquid
 
 def plot_total(mask_tot, color_ice, color_vapor, color_quasi, x_hex_coords, y_hex_coords, N):
+    #title = input('filename : ')
     final_color_ice = plot_ice(mask_tot, color_ice, x_hex_coords, y_hex_coords, N)
+    #plt.savefig(f"{title} ice")
     final_color_vapor = plot_vapeur(mask_tot, color_vapor, x_hex_coords, y_hex_coords, N)
+    #plt.savefig(f"{title} vapeur")
     final_color_quasi = plot_quasi(mask_tot, color_quasi, x_hex_coords, y_hex_coords, N)
+    #plt.savefig(f"{title} qll")
     final_colors = final_color_ice + final_color_vapor + final_color_quasi
+
+
 
     plot_single_lattice_custom_colors(x_hex_coords, y_hex_coords,       # Plot total des 3 phases 
                                       face_color= final_colors,
@@ -85,4 +92,5 @@ def plot_total(mask_tot, color_ice, color_vapor, color_quasi, x_hex_coords, y_he
                                       plotting_gap=0.0,
                                       rotate_deg=0)
     plt.title('Mask total')
-    plt.show()
+    #plt.savefig(f"{title} total")
+    
